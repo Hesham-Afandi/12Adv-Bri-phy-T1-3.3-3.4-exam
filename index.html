@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Grade 12 Advanced Physics - Electric Potential Energy & Electric Potential (3.3-3.4)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        body.en-mode { font-family: 'Inter', sans-serif; }
+        .correct { background-color: #dcfce7 !important; border-color: #16a34a !important; }
+        .incorrect { background-color: #fee2e2 !important; border-color: #dc2626 !important; }
+        .formula { font-family: 'Times New Roman', serif; letter-spacing: 0.5px; direction: ltr; display: inline-block; font-style: italic; }
+        .timer-warning { color: #dc2626 !important; animation: pulse 1s infinite; }
+        @keyframes pulse { 50% { opacity: 0.7; } }
+        @media print { .no-print { display: none !important; } }
+        .success-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.875rem; }
+        .grade-excellent { background: #dcfce7; color: #166534; }
+        .grade-good { background: #fef3c7; color: #92400e; }
+        .grade-pass { background: #dbeafe; color: #1e40af; }
+        .grade-fail { background: #fee2e2; color: #991b1b; }
+        .lang-switch {
+            position: fixed; top: 16px; left: 16px; z-index: 100;
+            background: white; padding: 6px; border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; gap: 4px;
+            border: 2px solid #0d9488;
+        }
+        [dir="ltr"] .lang-switch { left: auto; right: 16px; }
+        .lang-btn {
+            padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold;
+            transition: all 0.3s; border: none; font-size: 0.875rem;
+            background: transparent; color: #6b7280;
+        }
+        .lang-btn.active { background: #0d9488; color: white; box-shadow: 0 2px 6px rgba(13,148,136,0.4); }
+        .lang-btn:hover:not(.active) { background: #f0fdfa; color: #0d9488; }
+        .shuffle-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 p-4 md:p-8 min-h-screen">
+
+    <div class="lang-switch no-print">
+        <button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
+        <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+    </div>
+
+    <div id="timer-container" class="max-w-4xl mx-auto mb-4 text-center no-print">
+        <div class="bg-white p-4 rounded-xl shadow-md inline-block border-2 border-teal-100">
+            <span class="text-gray-600 ml-2" data-ar="⏱️ الوقت المتبقي:" data-en="⏱️ Time Remaining:">⏱️ الوقت المتبقي:</span>
+            <span id="timer" class="text-2xl font-bold text-teal-600 font-mono">60:00</span>
+            <span class="shuffle-badge" data-ar="🔀 أسئلة عشوائية" data-en="🔀 Random Questions">🔀 أسئلة عشوائية</span>
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto mb-6 flex flex-wrap gap-3 justify-center no-print">
+        <button onclick="toggleAnswers()" class="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="👁️ إظهار / إخفاء الإجابات" data-en="👁️ Show / Hide Answers">👁️ إظهار / إخفاء الإجابات</button>
+        <button onclick="window.print()" class="bg-gray-800 hover:bg-gray-900 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="🖨️ طباعة / PDF" data-en="🖨️ Print / PDF">🖨️ طباعة / PDF</button>
+        <button onclick="reshuffleExam()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-5 py-2 rounded-lg font-medium transition shadow cursor-pointer" data-ar="🔀 إعادة خلط الأسئلة" data-en="🔀 Reshuffle Questions">🔀 إعادة خلط الأسئلة</button>
+    </div>
+
+    <header class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md mb-8 border-r-4 border-teal-600">
+        <div class="text-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2" data-ar="⚡ فيزياء الصف الثاني عشر متقدم" data-en="⚡ Grade 12 Advanced Physics">⚡ فيزياء الصف الثاني عشر متقدم</h1>
+            <h2 class="text-lg text-teal-600 font-semibold" data-ar="الفصل 3.3 - 3.4: الطاقة الكامنة والجهد الكهربائي" data-en="Chapter 3.3-3.4: Electric Potential Energy & Electric Potential">الفصل 3.3 - 3.4: الطاقة الكامنة والجهد الكهربائي</h2>
+            <p class="text-sm text-gray-600 mt-2" data-ar="الطاقة الكامنة الكهربائية، الجهد، العلاقة بين E و V، الأسطح متساوية الجهد" data-en="Electric Potential Energy, Potential, Relationship between E and V, Equipotential Surfaces">الطاقة الكامنة الكهربائية، الجهد، العلاقة بين E و V، الأسطح متساوية الجهد</p>
+            <p class="text-xs text-orange-600 mt-2 font-semibold" data-ar="⚠️ ملاحظة: يتم خلط ترتيب الأسئلة والخيارات تلقائياً مع كل تحديث للصفحة" data-en="⚠️ Note: Questions and options are randomly shuffled on every page refresh">⚠️ ملاحظة: يتم خلط ترتيب الأسئلة والخيارات تلقائياً مع كل تحديث للصفحة</p>
+        </div>
+        <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+            <span><span data-ar="📅 التاريخ:" data-en="📅 Date:">📅 التاريخ:</span> <input type="text" class="border-b border-gray-400 bg-transparent w-28 text-center"></span>
+            <span><span data-ar="👤 الاسم:" data-en="👤 Name:">👤 الاسم:</span> <input type="text" id="studentName" class="border-b border-gray-400 bg-transparent w-32 text-center" placeholder="Enter name"></span>
+            <span><span data-ar="🏫 الشعبة:" data-en="🏫 Class:">🏫 الشعبة:</span> <input type="text" id="studentClass" class="border-b border-gray-400 bg-transparent w-28 text-center" placeholder="Class"></span>
+            <span><span data-ar="⏱️ المدة: 60 دقيقة" data-en="⏱️ Duration: 60 min">⏱️ المدة: 60 دقيقة</span></span>
+            <span><span data-ar="📊 المجموع: 100 درجة" data-en="📊 Total: 100 pts">📊 المجموع: 100 درجة</span></span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto space-y-8" id="exam-content"></main>
+
+    <div class="text-center no-print pb-8 mt-8">
+        <button onclick="gradeExam()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-lg px-10 py-4 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer" data-ar="📝 تسليم وتصحيح الامتحان" data-en="📝 Submit & Grade Exam">📝 تسليم وتصحيح الامتحان</button>
+    </div>
+
+    <div id="results-panel" class="max-w-4xl mx-auto mt-8 bg-white p-8 rounded-2xl shadow-2xl border-t-4 border-emerald-500 hidden no-print">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center" data-ar="📊 نتائج الامتحان" data-en="📊 Exam Results">📊 نتائج الامتحان</h2>
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-blue-50 p-4 rounded-xl text-center"><p data-ar="اسم الطالب" data-en="Student Name">اسم الطالب</p><p id="res-name" class="font-bold text-xl text-teal-700">-</p></div>
+            <div class="bg-purple-50 p-4 rounded-xl text-center"><p data-ar="التاريخ" data-en="Date">التاريخ</p><p id="res-date" class="font-bold text-xl text-purple-700">-</p></div>
+            <div class="bg-emerald-50 p-4 rounded-xl text-center"><p data-ar="المجموع" data-en="Score">المجموع</p><p id="res-total" class="font-bold text-3xl text-emerald-600">0 / 100</p></div>
+        </div>
+        <div class="text-center mb-6">
+            <span id="success-badge" class="success-badge grade-excellent">-</span>
+            <p id="success-percent" class="text-4xl font-bold text-emerald-600 mt-2">100%</p>
+            <p class="text-sm text-gray-500" data-ar="نسبة النجاح" data-en="Success Rate">نسبة النجاح</p>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-xl mb-6">
+            <h3 class="font-bold text-lg mb-4 text-gray-800" data-ar="📈 تفصيل الأداء حسب القسم:" data-en="📈 Performance Breakdown:">📈 تفصيل الأداء حسب القسم:</h3>
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="الطاقة الكامنة الكهربائية" data-en="Electric Potential Energy">الطاقة الكامنة الكهربائية</span>
+                    <span id="sec1-score" class="font-bold text-teal-600">0/4</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="الجهد الكهربائي (V)" data-en="Electric Potential (V)">الجهد الكهربائي (V)</span>
+                    <span id="sec2-score" class="font-bold text-teal-600">0/4</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="العلاقة بين E و V" data-en="Relationship between E and V">العلاقة بين E و V</span>
+                    <span id="sec3-score" class="font-bold text-teal-600">0/4</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="حساب الجهد لتوزيعات مستمرة" data-en="Potential of Continuous Distributions">حساب الجهد لتوزيعات مستمرة</span>
+                    <span id="sec4-score" class="font-bold text-teal-600">0/4</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-gray-700" data-ar="مسائل شاملة وتطبيقات" data-en="Comprehensive Problems & Applications">مسائل شاملة وتطبيقات</span>
+                    <span id="sec5-score" class="font-bold text-teal-600">0/4</span>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mb-6">
+            <button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white text-lg px-8 py-3 rounded-xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer" data-ar="📧 إرسال النتائج للمعلم" data-en="📧 Send Results to Teacher">📧 إرسال النتائج للمعلم</button>
+            <p id="emailStatus" class="text-sm mt-2 text-center font-medium"></p>
+        </div>
+        <div class="flex gap-3 justify-center">
+            <button onclick="window.print()" class="bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold" data-ar="🖨️ طباعة النتائج" data-en="🖨️ Print Results">🖨️ طباعة النتائج</button>
+        </div>
+    </div>
+
+    <footer class="max-w-4xl mx-auto mt-10 mb-8 text-center text-gray-500 text-sm no-print">
+        © <span data-ar="فيزياء الصف 12 متقدم | الطاقة الكامنة والجهد الكهربائي" data-en="Grade 12 Advanced Physics | Electric Potential Energy & Potential">فيزياء الصف 12 متقدم | الطاقة الكامنة والجهد الكهربائي</span> | Mr. Mohammed Hesham
+    </footer>
+
+<script>
+// ==================== إعدادات EmailJS ====================
+const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
+const SERVICE_ID = "service_w15m64i";
+const TEMPLATE_ID = "template_5b0u2tq";
+const TARGET_EMAIL = "mohammedhesham872@gmail.com";
+
+// تهيئة EmailJS عند تحميل الصفحة
+emailjs.init(PUBLIC_KEY);
+
+const originalExamData = {
+    sections: [
+        {
+            id: 'sec1',
+            title: { ar: '🔹 الجزء الأول: الطاقة الكامنة الكهربائية', en: '🔹 Part 1: Electric Potential Energy' },
+            questions: [
+                {
+                    q: { ar: 'الطاقة الكامنة الكهربائية <span class="formula">U</span> لشحنتين نقطيتين <span class="formula">q₁</span> و <span class="formula">q₂</span> تفصل بينهما مسافة <span class="formula">r</span> تُعطى بالعلاقة:', en: 'The electric potential energy <span class="formula">U</span> of two point charges <span class="formula">q₁</span> and <span class="formula">q₂</span> separated by distance <span class="formula">r</span> is given by:' },
+                    options: [
+                        { ar: '<span class="formula">U = kq₁q₂/r</span>', en: '<span class="formula">U = kq₁q₂/r</span>' },
+                        { ar: '<span class="formula">U = kq₁q₂/r²</span>', en: '<span class="formula">U = kq₁q₂/r²</span>' },
+                        { ar: '<span class="formula">U = kq₁q₂·r</span>', en: '<span class="formula">U = kq₁q₂·r</span>' },
+                        { ar: '<span class="formula">U = k(q₁+q₂)/r</span>', en: '<span class="formula">U = k(q₁+q₂)/r</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'الطاقة الكامنة = kq₁q₂/r، وهي كمية قياسية (ليست متجهة) مثل الجهد', en: 'Potential energy = kq₁q₂/r, it\'s a scalar quantity (not vector) like potential' }
+                },
+                {
+                    q: { ar: 'وحدة قياس الطاقة الكامنة الكهربائية في النظام الدولي هي:', en: 'The SI unit of electric potential energy is:' },
+                    options: [
+                        { ar: 'الجول (J)', en: 'Joule (J)' },
+                        { ar: 'الفولت (V)', en: 'Volt (V)' },
+                        { ar: 'الكولوم (C)', en: 'Coulomb (C)' },
+                        { ar: 'نيوتن/كولوم (N/C)', en: 'Newton/Coulomb (N/C)' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'الطاقة الكامنة تُقاس بالجول (J)، بينما الجهد يُقاس بالفولت (V)', en: 'Potential energy is measured in Joules (J), while potential is measured in Volts (V)' }
+                },
+                {
+                    q: { ar: 'إذا كانت الشحنتان <span class="formula">q₁</span> و <span class="formula">q₂</span> متشابهتين في الإشارة (كلاهما موجبتان)، فإن الطاقة الكامنة <span class="formula">U</span> تكون:', en: 'If charges <span class="formula">q₁</span> and <span class="formula">q₂</span> have the same sign (both positive), the potential energy <span class="formula">U</span> is:' },
+                    options: [
+                        { ar: 'موجبة (تحتاج شغل لفصلهما)', en: 'Positive (requires work to separate them)' },
+                        { ar: 'سالبة (تحتاج شغل لتقريبهما)', en: 'Negative (requires work to bring them closer)' },
+                        { ar: 'صفر', en: 'Zero' },
+                        { ar: 'غير محددة', en: 'Undefined' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'الشحنات المتشابهة تتنافر، لذا U موجبة وتحتاج شغل لفصلهما', en: 'Like charges repel, so U is positive and requires work to separate them' }
+                },
+                {
+                    q: { ar: 'الشغل المبذول بواسطة القوة الكهربائية عند نقل شحنة من النقطة A إلى النقطة B يساوي:', en: 'The work done by the electric force when moving a charge from point A to point B equals:' },
+                    options: [
+                        { ar: '<span class="formula">W = U_B - U_A</span>', en: '<span class="formula">W = U_B - U_A</span>' },
+                        { ar: '<span class="formula">W = U_A - U_B = -ΔU</span>', en: '<span class="formula">W = U_A - U_B = -ΔU</span>' },
+                        { ar: '<span class="formula">W = U_A + U_B</span>', en: '<span class="formula">W = U_A + U_B</span>' },
+                        { ar: '<span class="formula">W = ΔU</span>', en: '<span class="formula">W = ΔU</span>' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'الشغل = الطاقة الابتدائية - النهائية = -ΔU (مثل الطاقة الكامنة في الجاذبية)', en: 'Work = initial energy - final energy = -ΔU (like potential energy in gravity)' }
+                }
+            ]
+        },
+        {
+            id: 'sec2',
+            title: { ar: '🔹 الجزء الثاني: الجهد الكهربائي (V)', en: '🔹 Part 2: Electric Potential (V)' },
+            questions: [
+                {
+                    q: { ar: 'الجهد الكهربائي <span class="formula">V</span> عند نقطة يُعرّف بأنه:', en: 'The electric potential <span class="formula">V</span> at a point is defined as:' },
+                    options: [
+                        { ar: 'القوة الكهربائية لكل وحدة شحنة', en: 'Electric force per unit charge' },
+                        { ar: 'الطاقة الكامنة الكهربائية لكل وحدة شحنة', en: 'Electric potential energy per unit charge' },
+                        { ar: 'المجال الكهربائي × المسافة', en: 'Electric field × distance' },
+                        { ar: 'الشحنة ÷ المساحة', en: 'Charge ÷ area' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'V = U/q، وهو كمية قياسية (scalar) تُقاس بالفولت (V = J/C)', en: 'V = U/q, it\'s a scalar quantity measured in Volts (V = J/C)' }
+                },
+                {
+                    q: { ar: 'الجهد الكهربائي الناتج عن شحنة نقطية <span class="formula">q</span> على مسافة <span class="formula">r</span> منها يساوي:', en: 'The electric potential due to a point charge <span class="formula">q</span> at distance <span class="formula">r</span> is:' },
+                    options: [
+                        { ar: '<span class="formula">V = kq/r</span>', en: '<span class="formula">V = kq/r</span>' },
+                        { ar: '<span class="formula">V = kq/r²</span>', en: '<span class="formula">V = kq/r²</span>' },
+                        { ar: '<span class="formula">V = kq·r</span>', en: '<span class="formula">V = kq·r</span>' },
+                        { ar: '<span class="formula">V = kq²/r</span>', en: '<span class="formula">V = kq²/r</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'V = kq/r (لاحظ: الجهد يتناسب مع 1/r بينما المجال يتناسب مع 1/r²)', en: 'V = kq/r (note: potential is proportional to 1/r while field is proportional to 1/r²)' }
+                },
+                {
+                    q: { ar: 'فرق الجهد <span class="formula">ΔV = V_B - V_A</span> بين نقطتين في مجال كهربائي منتظم <span class="formula">E</span> يفصل بينهما مسافة <span class="formula">d</span> في اتجاه المجال يساوي:', en: 'The potential difference <span class="formula">ΔV = V_B - V_A</span> between two points in a uniform electric field <span class="formula">E</span> separated by distance <span class="formula">d</span> in the direction of the field equals:' },
+                    options: [
+                        { ar: '<span class="formula">ΔV = -Ed</span>', en: '<span class="formula">ΔV = -Ed</span>' },
+                        { ar: '<span class="formula">ΔV = Ed</span>', en: '<span class="formula">ΔV = Ed</span>' },
+                        { ar: '<span class="formula">ΔV = E/d</span>', en: '<span class="formula">ΔV = E/d</span>' },
+                        { ar: '<span class="formula">ΔV = E·d²</span>', en: '<span class="formula">ΔV = E·d²</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'ΔV = -Ed، أي الجهد يتناقص في اتجاه المجال الكهربائي', en: 'ΔV = -Ed, meaning potential decreases in the direction of the electric field' }
+                },
+                {
+                    q: { ar: 'الجهد الكهربائي عند اللانهاية (reference point) يُعتبر:', en: 'The electric potential at infinity (reference point) is considered:' },
+                    options: [
+                        { ar: 'يساوي صفراً (V = 0)', en: 'Zero (V = 0)' },
+                        { ar: 'يساوي اللانهاية', en: 'Infinity' },
+                        { ar: 'يساوي kq', en: 'kq' },
+                        { ar: 'غير محدد', en: 'Undefined' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'نختار V = 0 عند اللانهاية كنقطة مرجعية (مثل الطاقة الكامنة في الجاذبية)', en: 'We choose V = 0 at infinity as a reference point (like potential energy in gravity)' }
+                }
+            ]
+        },
+        {
+            id: 'sec3',
+            title: { ar: '🔹 الجزء الثالث: العلاقة بين E و V', en: '🔹 Part 3: Relationship between E and V' },
+            questions: [
+                {
+                    q: { ar: 'العلاقة بين المجال الكهربائي <span class="formula">E</span> والجهد الكهربائي <span class="formula">V</span> في بعد واحد هي:', en: 'The relationship between electric field <span class="formula">E</span> and electric potential <span class="formula">V</span> in one dimension is:' },
+                    options: [
+                        { ar: '<span class="formula">E = -dV/dx</span>', en: '<span class="formula">E = -dV/dx</span>' },
+                        { ar: '<span class="formula">E = dV/dx</span>', en: '<span class="formula">E = dV/dx</span>' },
+                        { ar: '<span class="formula">E = V/x</span>', en: '<span class="formula">E = V/x</span>' },
+                        { ar: '<span class="formula">E = -V·x</span>', en: '<span class="formula">E = -V·x</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'E = -dV/dx، أي المجال هو سالب معدل تغير الجهد (المجال يشير نحو الجهد الأقل)', en: 'E = -dV/dx, meaning field is the negative rate of change of potential (field points toward lower potential)' }
+                },
+                {
+                    q: { ar: 'على الأسطح متساوية الجهد (equipotential surfaces)، الشغل المبذول لنقل شحنة بين أي نقطتين على نفس السطح يساوي:', en: 'On equipotential surfaces, the work done to move a charge between any two points on the same surface equals:' },
+                    options: [
+                        { ar: 'صفر (لأن ΔV = 0)', en: 'Zero (because ΔV = 0)' },
+                        { ar: 'موجب', en: 'Positive' },
+                        { ar: 'سالب', en: 'Negative' },
+                        { ar: 'يعتمد على المسافة', en: 'Depends on distance' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'W = qΔV = q(0) = 0، لأن الجهد ثابت على السطح متساوي الجهد', en: 'W = qΔV = q(0) = 0, because potential is constant on equipotential surface' }
+                },
+                {
+                    q: { ar: 'الأسطح متساوية الجهد تكون دائماً:', en: 'Equipotential surfaces are always:' },
+                    options: [
+                        { ar: 'متوازية مع المجال الكهربائي', en: 'Parallel to the electric field' },
+                        { ar: 'عمودية على المجال الكهربائي', en: 'Perpendicular to the electric field' },
+                        { ar: 'مائلة بزاوية 45° على المجال', en: 'At 45° angle to the field' },
+                        { ar: 'عشوائية الاتجاه', en: 'Random direction' }
+                    ],
+                    correct: 1,
+                    answer: { ar: 'الأسطح متساوية الجهد دائماً عمودية على خطوط المجال الكهربائي', en: 'Equipotential surfaces are always perpendicular to electric field lines' }
+                },
+                {
+                    q: { ar: 'إذا تحركت شحنة في اتجاه المجال الكهربائي، فإن طاقتها الكامنة الكهربائية:', en: 'If a charge moves in the direction of the electric field, its electric potential energy:' },
+                    options: [
+                        { ar: 'تتناقص (للشحنة الموجبة)', en: 'Decreases (for positive charge)' },
+                        { ar: 'تتزايد (للشحنة الموجبة)', en: 'Increases (for positive charge)' },
+                        { ar: 'تبقى ثابتة', en: 'Remains constant' },
+                        { ar: 'تصبح صفراً', en: 'Becomes zero' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'الشحنة الموجبة تتحرك تلقائياً نحو الجهد الأقل، فتتناقص طاقتها الكامنة', en: 'Positive charge moves naturally toward lower potential, so its potential energy decreases' }
+                }
+            ]
+        },
+        {
+            id: 'sec4',
+            title: { ar: '🔹 الجزء الرابع: حساب الجهد لتوزيعات مستمرة', en: '🔹 Part 4: Potential of Continuous Distributions' },
+            questions: [
+                {
+                    q: { ar: 'الجهد الكهربائي عند نقطة على محور حلقة مشحونة نصف قطرها <span class="formula">R</span> وشحنتها الكلية <span class="formula">Q</span> على مسافة <span class="formula">x</span> من مركزها يساوي:', en: 'The electric potential at a point on the axis of a charged ring of radius <span class="formula">R</span> and total charge <span class="formula">Q</span> at distance <span class="formula">x</span> from its center equals:' },
+                    options: [
+                        { ar: '<span class="formula">V = kQ/√(x²+R²)</span>', en: '<span class="formula">V = kQ/√(x²+R²)</span>' },
+                        { ar: '<span class="formula">V = kQ/x</span>', en: '<span class="formula">V = kQ/x</span>' },
+                        { ar: '<span class="formula">V = kQ/(x²+R²)</span>', en: '<span class="formula">V = kQ/(x²+R²)</span>' },
+                        { ar: '<span class="formula">V = kQ·R/x</span>', en: '<span class="formula">V = kQ·R/x</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'كل عنصر شحنة dq على مسافة √(x²+R²) من النقطة، فيكون V = kQ/√(x²+R²)', en: 'Each charge element dq is at distance √(x²+R²) from the point, so V = kQ/√(x²+R²)' }
+                },
+                {
+                    q: { ar: 'الجهد الكهربائي على سطح قرص مشحون منتظماً نصف قطرها <span class="formula">R</span> وشحنتها السطحية <span class="formula">σ</span> يُحسب بـ:', en: 'The electric potential on the surface of a uniformly charged disk of radius <span class="formula">R</span> and surface charge density <span class="formula">σ</span> is calculated by:' },
+                    options: [
+                        { ar: 'التكامل <span class="formula">V = ∫dV</span> على حلقات متحدة المركز', en: 'The integral <span class="formula">V = ∫dV</span> over concentric rings' },
+                        { ar: 'قانون كولوم مباشرة', en: 'Coulomb\'s law directly' },
+                        { ar: 'قانون غاوس', en: 'Gauss\'s law' },
+                        { ar: 'لا يمكن حسابه', en: 'Cannot be calculated' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'نقسم القرص إلى حلقات متحدة المركز، كل حلقة تساهم بـ dV، ثم نكامل', en: 'We divide the disk into concentric rings, each ring contributes dV, then we integrate' }
+                },
+                {
+                    q: { ar: 'الجهد الكهربائي عند مركز حلقة مشحونة <span class="formula">V(0)</span> يساوي:', en: 'The electric potential at the center of a charged ring <span class="formula">V(0)</span> equals:' },
+                    options: [
+                        { ar: '<span class="formula">V = kQ/R</span>', en: '<span class="formula">V = kQ/R</span>' },
+                        { ar: '<span class="formula">V = kQ/R²</span>', en: '<span class="formula">V = kQ/R²</span>' },
+                        { ar: '<span class="formula">V = 0</span>', en: '<span class="formula">V = 0</span>' },
+                        { ar: '<span class="formula">V = ∞</span>', en: '<span class="formula">V = ∞</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'عند x=0: V = kQ/√(0+R²) = kQ/R', en: 'At x=0: V = kQ/√(0+R²) = kQ/R' }
+                },
+                {
+                    q: { ar: 'الجهد الكهربائي <span class="formula">V</span> كمية:', en: 'The electric potential <span class="formula">V</span> is a:' },
+                    options: [
+                        { ar: 'كمية قياسية (scalar) — نجمعها جبرياً', en: 'Scalar quantity — we add it algebraically' },
+                        { ar: 'كمية متجهة (vector) — نجمعها متجهياً', en: 'Vector quantity — we add it vectorially' },
+                        { ar: 'لا قياسية ولا متجهة', en: 'Neither scalar nor vector' },
+                        { ar: 'تعتمد على الشحنة', en: 'Depends on charge' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'الجهد كمية قياسية، لذا لحساب الجهد الكلي نجمع جهود الشحنات جبرياً (بدون اتجاهات)', en: 'Potential is a scalar, so to find total potential we add charges\' potentials algebraically (no directions)' }
+                }
+            ]
+        },
+        {
+            id: 'sec5',
+            title: { ar: '🔹 الجزء الخامس: مسائل شاملة وتطبيقات', en: '🔹 Part 5: Comprehensive Problems & Applications' },
+            questions: [
+                {
+                    q: { ar: 'جسيم كتلته <span class="formula">m = 6.00 mg</span> وشحنته <span class="formula">q = +3.00 μC</span> أُطلق بسرعة ابتدائية <span class="formula">v₀ = 66.0 m/s</span> نحو شحنة ثابتة <span class="formula">Q = +4.50 μC</span>. أقرب مسافة <span class="formula">d</span> يصل إليها الجسيم من الشحنة الثابتة:', en: 'A particle of mass <span class="formula">m = 6.00 mg</span> and charge <span class="formula">q = +3.00 μC</span> is launched with initial velocity <span class="formula">v₀ = 66.0 m/s</span> toward a fixed charge <span class="formula">Q = +4.50 μC</span>. The closest distance <span class="formula">d</span> the particle reaches from the fixed charge:' },
+                    options: [
+                        { ar: '<span class="formula">d = 0.761 cm</span>', en: '<span class="formula">d = 0.761 cm</span>' },
+                        { ar: '<span class="formula">d = 4.20 cm</span>', en: '<span class="formula">d = 4.20 cm</span>' },
+                        { ar: '<span class="formula">d = 1.45 cm</span>', en: '<span class="formula">d = 1.45 cm</span>' },
+                        { ar: '<span class="formula">d = 0.247 cm</span>', en: '<span class="formula">d = 0.247 cm</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'باستخدام حفظ الطاقة: ΔK + ΔU = 0 → mv₀²/2 = kqQ/d → d = 2kqQ/(mv₀²) = 0.761 cm', en: 'Using energy conservation: ΔK + ΔU = 0 → mv₀²/2 = kqQ/d → d = 2kqQ/(mv₀²) = 0.761 cm' }
+                },
+                {
+                    q: { ar: 'ثلاث شحنات <span class="formula">q₁ = +1.50 μC</span>, <span class="formula">q₂ = +2.50 μC</span>, <span class="formula">q₃ = -3.50 μC</span> موضوعة عند رؤوس مثلث قائم. الجهد الكلي عند نقطة <span class="formula">P(b, a)</span> حيث <span class="formula">a = 8.00 m</span> و <span class="formula">b = 6.00 m</span> يساوي تقريباً:', en: 'Three charges <span class="formula">q₁ = +1.50 μC</span>, <span class="formula">q₂ = +2.50 μC</span>, <span class="formula">q₃ = -3.50 μC</span> are placed at the vertices of a right triangle. The total potential at point <span class="formula">P(b, a)</span> where <span class="formula">a = 8.00 m</span> and <span class="formula">b = 6.00 m</span> is approximately:' },
+                    options: [
+                        { ar: '<span class="formula">V ≈ 562 V</span>', en: '<span class="formula">V ≈ 562 V</span>' },
+                        { ar: '<span class="formula">V ≈ 1000 V</span>', en: '<span class="formula">V ≈ 1000 V</span>' },
+                        { ar: '<span class="formula">V ≈ 250 V</span>', en: '<span class="formula">V ≈ 250 V</span>' },
+                        { ar: '<span class="formula">V ≈ 0 V</span>', en: '<span class="formula">V ≈ 0 V</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'V = kq₁/r₁ + kq₂/r₂ + kq₃/r₃، حيث r₁ = 10m, r₂ = 8m, r₃ = 6m → V ≈ 562 V', en: 'V = kq₁/r₁ + kq₂/r₂ + kq₃/r₃, where r₁ = 10m, r₂ = 8m, r₃ = 6m → V ≈ 562 V' }
+                },
+                {
+                    q: { ar: 'الإلكترون فولت (eV) هو وحدة طاقة تساوي:', en: 'The electron volt (eV) is a unit of energy equal to:' },
+                    options: [
+                        { ar: '<span class="formula">1.602 × 10⁻¹⁹ J</span>', en: '<span class="formula">1.602 × 10⁻¹⁹ J</span>' },
+                        { ar: '<span class="formula">1.602 × 10¹⁹ J</span>', en: '<span class="formula">1.602 × 10¹⁹ J</span>' },
+                        { ar: '<span class="formula">1 J</span>', en: '<span class="formula">1 J</span>' },
+                        { ar: '<span class="formula">9.11 × 10⁻³¹ J</span>', en: '<span class="formula">9.11 × 10⁻³¹ J</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: '1 eV = e × 1V = (1.602×10⁻¹⁹ C)(1 V) = 1.602×10⁻¹⁹ J', en: '1 eV = e × 1V = (1.602×10⁻¹⁹ C)(1 V) = 1.602×10⁻¹⁹ J' }
+                },
+                {
+                    q: { ar: 'في معجل الجسيمات، أيون أكسجين <span class="formula">⁸O⁺¹⁶</span> (Z=8) يُعجَّل خلال فرق جهد <span class="formula">ΔV = 1.00 × 10⁷ V</span>. الطاقة الحركية النهائية للأيون تساوي:', en: 'In a particle accelerator, an oxygen ion <span class="formula">⁸O⁺¹⁶</span> (Z=8) is accelerated through a potential difference <span class="formula">ΔV = 1.00 × 10⁷ V</span>. The final kinetic energy of the ion equals:' },
+                    options: [
+                        { ar: '<span class="formula">K = 8eΔV = 1.28 × 10⁻¹¹ J</span>', en: '<span class="formula">K = 8eΔV = 1.28 × 10⁻¹¹ J</span>' },
+                        { ar: '<span class="formula">K = eΔV = 1.60 × 10⁻¹² J</span>', en: '<span class="formula">K = eΔV = 1.60 × 10⁻¹² J</span>' },
+                        { ar: '<span class="formula">K = 16eΔV</span>', en: '<span class="formula">K = 16eΔV</span>' },
+                        { ar: '<span class="formula">K = 0</span>', en: '<span class="formula">K = 0</span>' }
+                    ],
+                    correct: 0,
+                    answer: { ar: 'K = ZeΔV = 8eΔV = 8(1.602×10⁻¹⁹)(10⁷) = 1.28×10⁻¹¹ J', en: 'K = ZeΔV = 8eΔV = 8(1.602×10⁻¹⁹)(10⁷) = 1.28×10⁻¹¹ J' }
+                }
+            ]
+        }
+    ]
+};
+
+function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+let examData;
+let correctAnswersMap = {};
+let currentLang = 'ar';
+let timeRemaining = 3600;
+let timerInterval;
+
+function prepareShuffledExam() {
+    examData = JSON.parse(JSON.stringify(originalExamData));
+    correctAnswersMap = {};
+    let globalIdx = 0;
+    
+    examData.sections.forEach((section) => {
+        section.questions = shuffleArray(section.questions);
+        
+        section.questions.forEach((q) => {
+            const optionsWithCorrect = q.options.map((opt, idx) => ({
+                option: opt,
+                isCorrect: idx === q.correct
+            }));
+            
+            const shuffledOptions = shuffleArray(optionsWithCorrect);
+            q.options = shuffledOptions.map(o => o.option);
+            
+            const newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+            q.correct = newCorrectIndex;
+            
+            correctAnswersMap[globalIdx] = String.fromCharCode(97 + newCorrectIndex);
+            globalIdx++;
+        });
+    });
+    
+    console.log('✅ تم خلط الأسئلة والخيارات بنجاح');
+}
+
+function reshuffleExam() {
+    prepareShuffledExam();
+    renderExam();
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r => r.checked = false);
+    document.getElementById('results-panel').classList.add('hidden');
+    document.querySelectorAll('.correct, .incorrect').forEach(el => {
+        el.classList.remove('correct', 'incorrect');
+    });
+    alert(currentLang === 'ar' 
+        ? '🔀 تم إعادة خلط الأسئلة والخيارات بنجاح!' 
+        : '🔀 Questions and options have been reshuffled successfully!');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    
+    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    
+    document.body.classList.toggle('en-mode', lang === 'en');
+    
+    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+        el.textContent = el.getAttribute(`data-${lang}`);
+    });
+    
+    renderExam();
+}
+
+function renderExam() {
+    const container = document.getElementById('exam-content');
+    const labels = {
+        ar: { option: ['أ', 'ب', 'ج', 'د'], answer: '✅ الإجابة:' },
+        en: { option: ['A', 'B', 'C', 'D'], answer: '✅ Answer:' }
+    };
+    const lbl = labels[currentLang];
+    const isRTL = currentLang === 'ar';
+    
+    let html = '';
+    let globalIdx = 0;
+    
+    examData.sections.forEach((section) => {
+        html += `
+        <section class="bg-white p-6 rounded-xl shadow-lg">
+            <h2 class="text-xl font-bold mb-4 text-teal-700">${section.title[currentLang]}</h2>
+            <ol class="space-y-4 text-sm">`;
+            
+        section.questions.forEach((q) => {
+            const borderSide = isRTL ? 'border-r-4 pr-4' : 'border-l-4 pl-4';
+            html += `
+                <li class="${borderSide} border-teal-500 py-2" id="q-${globalIdx}">
+                    <strong>${globalIdx + 1}.</strong> ${q.q[currentLang]}<br>`;
+                    
+            q.options.forEach((opt, oIdx) => {
+                const radioSide = isRTL ? 'mr-4 ml-2' : 'ml-4 mr-2';
+                html += `
+                    <label class="cursor-pointer block mt-1 ${isRTL ? 'mr-4' : 'ml-4'}">
+                        <input type="radio" name="q${globalIdx}" value="${String.fromCharCode(97 + oIdx)}" class="${radioSide}"> 
+                        ${lbl.option[oIdx]}) ${opt[currentLang]}
+                    </label>`;
+            });
+            
+            html += `
+                    <div class="answer-box text-green-700 mt-2 font-medium hidden">
+                        ${lbl.answer} ${lbl.option[q.correct]}) ${q.options[q.correct][currentLang]} — ${q.answer[currentLang]}
+                    </div>
+                </li>`;
+            globalIdx++;
+        });
+        
+        html += `
+            </ol>
+        </section>`;
+    });
+    
+    container.innerHTML = html;
+}
+
+function startTimer() {
+    document.getElementById('timer-container').style.display = 'block';
+    timerInterval = setInterval(() => {
+        timeRemaining--;
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        const timerEl = document.getElementById('timer');
+        timerEl.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+        if (timeRemaining <= 300) timerEl.classList.add('timer-warning');
+        if (timeRemaining <= 0) {
+            clearInterval(timerInterval);
+            alert(currentLang === 'ar' ? "انتهى الوقت! سيتم تسليم الامتحان تلقائياً." : "Time's up! Exam will be submitted automatically.");
+            gradeExam();
+        }
+    }, 1000);
+}
+
+function toggleAnswers() {
+    document.querySelectorAll('.answer-box').forEach(el => el.classList.toggle('hidden'));
+}
+
+function gradeExam() {
+    let correctCount = 0;
+    let sec1 = 0, sec2 = 0, sec3 = 0, sec4 = 0, sec5 = 0;
+    
+    for (let i = 0; i < 20; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const li = document.getElementById(`q-${i}`);
+        const correctAnswer = correctAnswersMap[i];
+        
+        if (li) {
+            const isCorrect = selected && selected.value === correctAnswer;
+            
+            if (isCorrect) {
+                correctCount++;
+                li.classList.add('correct');
+                li.classList.remove('incorrect');
+                
+                if (i < 4) sec1++;
+                else if (i < 8) sec2++;
+                else if (i < 12) sec3++;
+                else if (i < 16) sec4++;
+                else sec5++;
+            } else {
+                li.classList.add('incorrect');
+                li.classList.remove('correct');
+            }
+        }
+    }
+
+    const score = (correctCount / 20) * 100;
+    const successRate = Math.round(score);
+    
+    document.getElementById('res-total').textContent = `${Math.round(score)} / 100`;
+    document.getElementById('res-name').textContent = document.getElementById('studentName').value || (currentLang === 'ar' ? 'طالب' : 'Student');
+    document.getElementById('res-date').textContent = new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-AE' : 'en-US');
+    
+    document.getElementById('sec1-score').textContent = `${sec1}/4`;
+    document.getElementById('sec2-score').textContent = `${sec2}/4`;
+    document.getElementById('sec3-score').textContent = `${sec3}/4`;
+    document.getElementById('sec4-score').textContent = `${sec4}/4`;
+    document.getElementById('sec5-score').textContent = `${sec5}/4`;
+    
+    const badge = document.getElementById('success-badge');
+    const percent = document.getElementById('success-percent');
+    percent.textContent = `${successRate}%`;
+    
+    if (currentLang === 'ar') {
+        if (successRate >= 90) { badge.textContent = 'ممتاز'; badge.className = 'success-badge grade-excellent'; }
+        else if (successRate >= 75) { badge.textContent = 'جيد جداً'; badge.className = 'success-badge grade-good'; }
+        else if (successRate >= 50) { badge.textContent = 'جيد'; badge.className = 'success-badge grade-pass'; }
+        else { badge.textContent = 'يحتاج تحسين'; badge.className = 'success-badge grade-fail'; }
+    } else {
+        if (successRate >= 90) { badge.textContent = 'Excellent'; badge.className = 'success-badge grade-excellent'; }
+        else if (successRate >= 75) { badge.textContent = 'Very Good'; badge.className = 'success-badge grade-good'; }
+        else if (successRate >= 50) { badge.textContent = 'Good'; badge.className = 'success-badge grade-pass'; }
+        else { badge.textContent = 'Needs Improvement'; badge.className = 'success-badge grade-fail'; }
+    }
+    
+    document.getElementById('results-panel').classList.remove('hidden');
+    document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('sendEmailBtn').classList.remove('hidden');
+}
+
+function sendResultsToEmail() {
+    const btn = document.getElementById('sendEmailBtn');
+    const status = document.getElementById('emailStatus');
+    btn.disabled = true;
+    btn.textContent = currentLang === 'ar' ? '⏳ جاري الإرسال...' : '📤 Sending...';
+
+    const name = document.getElementById('studentName').value || 'N/A';
+    const studentClass = document.getElementById('studentClass').value || 'N/A';
+    const date = document.querySelector('input[type="text"]').value || new Date().toLocaleDateString();
+    const score = document.getElementById('res-total').textContent;
+    const successRate = document.getElementById('success-percent').textContent;
+    const badge = document.getElementById('success-badge').textContent;
+
+    const sectionNames = {
+        ar: ['الطاقة الكامنة الكهربائية', 'الجهد الكهربائي (V)', 'العلاقة بين E و V', 'حساب الجهد لتوزيعات مستمرة', 'مسائل شاملة وتطبيقات'],
+        en: ['Electric Potential Energy', 'Electric Potential (V)', 'Relationship between E and V', 'Potential of Continuous Distributions', 'Comprehensive Problems']
+    };
+    const currentSectionNames = sectionNames[currentLang];
+
+    let answersHTML = `
+        <div style="font-family: 'Segoe UI', Tahoma, Arial, sans-serif; direction: ${currentLang === 'ar' ? 'rtl' : 'ltr'};">
+            <div style="background: linear-gradient(135deg, #0d9488, #0891b2); color: white; padding: 20px; border-radius: 10px 10px 0 0; text-align: center;">
+                <h2 style="margin: 0; font-size: 22px;">⚡ ${currentLang === 'ar' ? 'نتيجة امتحان الطاقة الكامنة والجهد الكهربائي' : 'Electric Potential Energy & Potential Exam Result'}</h2>
+                <p style="margin: 5px 0 0 0; opacity: 0.9;">${currentLang === 'ar' ? 'فيزياء الصف الثاني عشر متقدم | الفصل 3.3-3.4' : 'Grade 12 Advanced Physics | Chapter 3.3-3.4'}</p>
+                <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.8;">🔀 ${currentLang === 'ar' ? 'تم خلط الأسئلة تلقائياً' : 'Questions were randomly shuffled'}</p>
+            </div>
+            
+            <div style="background: #f0fdfa; padding: 15px; border: 1px solid #99f6e4;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 8px; font-weight: bold; color: #0f766e;">${currentLang === 'ar' ? '👤 الاسم:' : '👤 Name:'}</td>
+                        <td style="padding: 8px;">${name}</td>
+                        <td style="padding: 8px; font-weight: bold; color: #0f766e;">${currentLang === 'ar' ? '🏫 الشعبة:' : '🏫 Class:'}</td>
+                        <td style="padding: 8px;">${studentClass}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; font-weight: bold; color: #0f766e;">${currentLang === 'ar' ? '📅 التاريخ:' : '📅 Date:'}</td>
+                        <td style="padding: 8px;">${date}</td>
+                        <td style="padding: 8px; font-weight: bold; color: #0f766e;">${currentLang === 'ar' ? '🏆 التقدير:' : '🏆 Grade:'}</td>
+                        <td style="padding: 8px;">${badge}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="background: white; padding: 20px; text-align: center; border-bottom: 2px solid #e5e7eb;">
+                <div style="display: inline-block; margin: 0 15px;">
+                    <div style="font-size: 32px; font-weight: bold; color: #0d9488;">${score}</div>
+                    <div style="color: #6b7280; font-size: 13px;">${currentLang === 'ar' ? 'الدرجة الكلية' : 'Total Score'}</div>
+                </div>
+                <div style="display: inline-block; margin: 0 15px;">
+                    <div style="font-size: 32px; font-weight: bold; color: #059669;">${successRate}%</div>
+                    <div style="color: #6b7280; font-size: 13px;">${currentLang === 'ar' ? 'نسبة النجاح' : 'Success Rate'}</div>
+                </div>
+            </div>
+
+            <h3 style="background: #f3f4f6; padding: 12px; margin: 0; color: #1f2937; border-bottom: 2px solid #d1d5db;">
+                📝 ${currentLang === 'ar' ? 'تفاصيل الإجابات' : 'Answer Details'}
+            </h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr style="background: #0d9488; color: white;">
+                        <th style="padding: 10px; border: 1px solid #0b7d73; width: 8%;">#</th>
+                        <th style="padding: 10px; border: 1px solid #0b7d73; width: 32%;">${currentLang === 'ar' ? 'القسم' : 'Section'}</th>
+                        <th style="padding: 10px; border: 1px solid #0b7d73; width: 15%;">${currentLang === 'ar' ? 'الإجابة' : 'Answer'}</th>
+                        <th style="padding: 10px; border: 1px solid #0b7d73; width: 15%;">${currentLang === 'ar' ? 'الصحيحة' : 'Correct'}</th>
+                        <th style="padding: 10px; border: 1px solid #0b7d73; width: 15%;">${currentLang === 'ar' ? 'النتيجة' : 'Status'}</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    let sectionScores = [0, 0, 0, 0, 0];
+    let sectionTotals = [4, 4, 4, 4, 4];
+
+    for (let i = 0; i < 20; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const selectedValue = selected ? selected.value : '-';
+        const correctValue = correctAnswersMap[i];
+        const isCorrect = selectedValue === correctValue;
+        
+        const sectionIndex = Math.floor(i / 4);
+        if (isCorrect) sectionScores[sectionIndex]++;
+
+        const rowBg = i % 2 === 0 ? '#f9fafb' : '#ffffff';
+        const statusBg = isCorrect ? '#dcfce7' : '#fee2e2';
+        const statusColor = isCorrect ? '#166534' : '#991b1b';
+        const statusIcon = isCorrect ? '✅' : '❌';
+        const statusText = isCorrect 
+            ? (currentLang === 'ar' ? 'صحيح' : 'Correct') 
+            : (currentLang === 'ar' ? 'خطأ' : 'Wrong');
+
+        answersHTML += `
+            <tr style="background: ${rowBg};">
+                <td style="padding: 8px; border: 1px solid #e5e7eb; text-align: center; font-weight: bold;">${i + 1}</td>
+                <td style="padding: 8px; border: 1px solid #e5e7eb;">${currentSectionNames[sectionIndex]}</td>
+                <td style="padding: 8px; border: 1px solid #e5e7eb; text-align: center; font-weight: bold;">${selectedValue.toUpperCase()}</td>
+                <td style="padding: 8px; border: 1px solid #e5e7eb; text-align: center; font-weight: bold; color: #059669;">${correctValue.toUpperCase()}</td>
+                <td style="padding: 8px; border: 1px solid #e5e7eb; text-align: center; background: ${statusBg}; color: ${statusColor}; font-weight: bold;">
+                    ${statusIcon} ${statusText}
+                </td>
+            </tr>
+        `;
+    }
+
+    answersHTML += `
+                </tbody>
+            </table>
+
+            <h3 style="background: #f3f4f6; padding: 12px; margin: 0; color: #1f2937; border-bottom: 2px solid #d1d5db; border-top: 3px solid #0d9488;">
+                📊 ${currentLang === 'ar' ? 'تفصيل الأداء' : 'Performance Breakdown'}
+            </h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                    <tr style="background: #7c3aed; color: white;">
+                        <th style="padding: 10px; border: 1px solid #6d28d9;">${currentLang === 'ar' ? 'القسم' : 'Section'}</th>
+                        <th style="padding: 10px; border: 1px solid #6d28d9; width: 20%;">${currentLang === 'ar' ? 'النتيجة' : 'Score'}</th>
+                        <th style="padding: 10px; border: 1px solid #6d28d9; width: 20%;">${currentLang === 'ar' ? 'النسبة' : 'Percentage'}</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    for (let i = 0; i < 5; i++) {
+        const percentage = Math.round((sectionScores[i] / sectionTotals[i]) * 100);
+        const barColor = percentage >= 75 ? '#10b981' : percentage >= 50 ? '#f59e0b' : '#ef4444';
+        const rowBg = i % 2 === 0 ? '#f9fafb' : '#ffffff';
+        
+        answersHTML += `
+            <tr style="background: ${rowBg};">
+                <td style="padding: 10px; border: 1px solid #e5e7eb; font-weight: 600;">${currentSectionNames[i]}</td>
+                <td style="padding: 10px; border: 1px solid #e5e7eb; text-align: center; font-weight: bold; color: #0d9488;">
+                    ${sectionScores[i]} / ${sectionTotals[i]}
+                </td>
+                <td style="padding: 10px; border: 1px solid #e5e7eb;">
+                    <div style="background: #e5e7eb; border-radius: 10px; overflow: hidden; height: 20px; position: relative;">
+                        <div style="background: ${barColor}; width: ${percentage}%; height: 100%;"></div>
+                        <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 11px; font-weight: bold; color: #1f2937;">
+                            ${percentage}%
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+
+    answersHTML += `
+                </tbody>
+            </table>
+
+            <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 15px; border-radius: 0 0 10px 10px; border-top: 2px solid #f59e0b;">
+                <p style="margin: 0; color: #78350f; text-align: center; font-size: 13px;">
+                    💡 <strong>${currentLang === 'ar' ? 'ملاحظة:' : 'Note:'}</strong> 
+                    ${currentLang === 'ar' 
+                        ? 'تم إرسال هذا التقرير تلقائياً من منصة 4U التعليمية | Mr. Mohammed Hesham' 
+                        : 'This report was automatically sent from 4U Educational Platform | Mr. Mohammed Hesham'}
+                </p>
+            </div>
+        </div>
+    `;
+
+    const templateParams = {
+        to_email: TARGET_EMAIL,
+        student_name: name,
+        student_class: studentClass,
+        exam_date: date,
+        total_score: score,
+        success_rate: successRate,
+        grade: badge,
+        answers_table: answersHTML
+    };
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+        .then(() => {
+            status.textContent = currentLang === 'ar' 
+                ? '✅ تم إرسال النتائج بنجاح!' 
+                : '✅ Results sent successfully!';
+            status.style.color = '#059669';
+            btn.textContent = currentLang === 'ar' ? '✓ تم الإرسال' : '✓ Sent';
+        })
+        .catch(err => {
+            status.textContent = currentLang === 'ar' 
+                ? '❌ فشل الإرسال، حاول مرة أخرى' 
+                : '❌ Failed to send, try again';
+            status.style.color = '#dc2626';
+            btn.disabled = false;
+            btn.textContent = currentLang === 'ar' ? '📧 إعادة المحاولة' : '📧 Retry Send';
+            console.error('EmailJS Error:', err);
+        });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    prepareShuffledExam();
+    renderExam();
+    startTimer();
+    console.log('🔀 تم خلط الأسئلة والخيارات عشوائياً!');
+});
+</script>
+</body>
+</html>
